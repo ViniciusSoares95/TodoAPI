@@ -8,11 +8,18 @@ const Usuario = sequelize.define('usuario', {
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: false
+        unique: true,
+        validate: {
+            isEmail: true,
+        }
     },
     senha: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false,
+        validate: {
+            len:[8,255]
+        }
+
     }
 });
 

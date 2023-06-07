@@ -17,6 +17,7 @@ router.get('/tarefas', TarefasController.listar);
 router.get('/tarefas/:id', TarefasController.exibir);
 router.delete('/tarefas/:id', TarefasController.deletar);
 
+router.post('/login', UsuariosController.login);
 router.post('/usuarios', UsuariosController.criar);
 router.put('/usuarios/:id',UsuariosController.update);
 router.get('/usuarios', UsuariosController.listar);

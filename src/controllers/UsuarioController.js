@@ -1,14 +1,24 @@
+require('dotenv').config();
+
 const Usuario = require('../models/Usuario');
 
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const secretKey = process.env.JWT_SECRET;
 const UsuariosController = {
     async criar(req ,res) {
         try{
             //logica validação para criar uma tarefa inserindo no bd
             const {nome, email, senha} = req.body;
+            const existeUsuario = await Usuario.findOne({where: {email}});
+            if(existeUsuario) {
+                return res.status(409).json({message: 'Email já cadastrado!'})
+            }
+            const hashedPassword = await bcrypt.hash(senha, 10);
             const usuario = await Usuario.create({
                 nome,
                 email,
-                senha
+                senha: hashedPassword
             })
             res.status(201).json({dados: usuario, mensagem: 'usuario criada com sucesso'});
         } catch (error) {
@@ -77,6 +87,25 @@ const UsuariosController = {
             res.status(500).json({mensagem: 'erro de servidor'});
         }
     },
+
+    async login(req, res) {
+        try {
+            const {email, senha} = req.body;
+            const usuario = await Usuario.findOne({where: {email}});
+            if (!usuario) {
+                return res.status(401).json({message: 'Usuario não encontrado!'})
+            }
+            const match = await bcrypt.compare(senha, usuario.senha);
+            if(!match) {
+                return res.status(401).json({message: 'usuario ou senha invalida!'});
+            }
+            //controlar a autenticação
+            const token = jwt.sign({usuarioId: usuario.id}, secretKey, {expiresIn: '3h'});
+            return res.json({token});
+        } catch (error) {
+
+        }
+    }
     
 }
 
