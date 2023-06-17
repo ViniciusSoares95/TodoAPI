@@ -20,7 +20,7 @@ const UsuariosController = {
                 email,
                 senha: hashedPassword
             })
-            res.status(201).json({dados: usuario, mensagem: 'usuario criada com sucesso'});
+            res.status(201).json({usuario});
         } catch (error) {
             console.log(error);
             res.status(500).json({mensagem: 'erro de servidor'});
@@ -90,6 +90,7 @@ const UsuariosController = {
 
     async login(req, res) {
         try {
+            console.log(req.body);
             const {email, senha} = req.body;
             const usuario = await Usuario.findOne({where: {email}});
             if (!usuario) {
