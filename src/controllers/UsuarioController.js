@@ -102,7 +102,7 @@ const UsuariosController = {
             }
             //controlar a autenticação
             const token = jwt.sign({usuarioId: usuario.id}, secretKey, {expiresIn: '3h'});
-            return res.json({token});
+            return res.json({token, usuario});
         } catch (error) {
 
         }

@@ -1,5 +1,6 @@
 const sequelize = require('../database/connection');
 const {DataTypes} = require('sequelize');
+const Tarefa = require('./Tarefa');
 
 const Usuario = sequelize.define('usuario', {
     nome: {
@@ -22,6 +23,9 @@ const Usuario = sequelize.define('usuario', {
 
     }
 });
+
+Usuario.hasMany(Tarefa, {as: 'tarefas', onDelete: 'CASCADE'})
+Tarefa.belongsTo(Usuario);
 
 sequelize.sync()
     .then(() => {

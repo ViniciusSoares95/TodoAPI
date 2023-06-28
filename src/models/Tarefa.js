@@ -20,6 +20,8 @@ const Tarefa = sequelize.define('tarefas', {
     }
 });
 
+
+
 sequelize.sync()
     .then(() => {
         console.log('tabela tarefas sincronizada com sucesso!')
