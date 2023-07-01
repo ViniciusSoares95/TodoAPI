@@ -4,6 +4,7 @@ const TarefasController = {
     async criar(req ,res) {
         try{
             //logica validação para criar uma tarefa inserindo no bd
+            console.log(req.body);
             const {descricao, data, hora} = req.body;
             const {usuarioId} = req.query;
             //validação e formatação da data para evitar erros
